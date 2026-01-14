@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import RoomList from './pages/RoomList';
-import ChatRoom from './pages/ChatRoom';
+import Home from './components/Home';
+import Login from './components/Login';
+import RoomList from './components/RoomList';
+import ChatRoom from './components/ChatRoom';
 import PrivateRoute from './components/PrivateRoute';
 
 function App() {
