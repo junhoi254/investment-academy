@@ -122,9 +122,9 @@ function ChatRoom() {
       return false;
     }
 
-    // 무료방인 경우 관리자만 전송 가능
+    // ✅ 수정: 무료방인 경우 관리자와 staff만 전송 가능
     if (roomInfo?.is_free) {
-      return userInfo.role === 'admin' || userInfo.role === 'sub_admin';
+      return userInfo.role === 'admin' || userInfo.role === 'staff';
     }
 
     // 유료방은 로그인한 사용자 모두 전송 가능
@@ -235,6 +235,7 @@ function ChatRoom() {
                   <span className="message-author">
                     {msg.user_name || '익명'}
                     {msg.user_role === 'admin' && <span className="admin-badge">관리자</span>}
+                    {msg.user_role === 'staff' && <span className="admin-badge">서브관리자</span>}
                   </span>
                   <span className="message-time">
                     {new Date(msg.created_at).toLocaleTimeString('ko-KR', {

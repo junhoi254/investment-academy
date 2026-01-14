@@ -18,7 +18,7 @@ function RoomList() {
   const fetchUserInfo = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}/api/me`, {
+      const response = await fetch(`${API_URL}/api/users/me`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -64,6 +64,11 @@ function RoomList() {
     navigate('/');
   };
 
+  // ✅ 관리자 페이지 이동 추가
+  const handleAdminPanel = () => {
+    navigate('/admin');
+  };
+
   // 무료방과 유료방 분리
   const freeRooms = rooms.filter(room => room.is_free === true);
   const paidRooms = rooms.filter(room => room.is_free === false);
@@ -79,9 +84,19 @@ function RoomList() {
         </div>
         <div className="header-right">
           {userInfo && (
-            <span className="user-name">
-              {userInfo.name || userInfo.phone} 님
-            </span>
+            <>
+              <span className="user-name">
+                {userInfo.name || userInfo.phone} 님
+                {userInfo.role === 'admin' && ' (관리자)'}
+                {userInfo.role === 'staff' && ' (서브관리자)'}
+              </span>
+              {/* ✅ 관리자 페이지 버튼 추가 */}
+              {userInfo.role === 'admin' && (
+                <button onClick={handleAdminPanel} className="btn-admin">
+                  ⚙️ 관리자 페이지
+                </button>
+              )}
+            </>
           )}
           <button onClick={handleLogout} className="btn-logout">
             로그아웃
