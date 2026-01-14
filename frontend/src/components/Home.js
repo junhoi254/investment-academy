@@ -16,13 +16,12 @@ function Home() {
 
   const fetchFreeRooms = async () => {
     try {
-      // 모든 방을 가져온 후 클라이언트에서 필터링
-      const response = await fetch(`${API_URL}/api/rooms`);
+      // ✅ 수정: 올바른 엔드포인트 사용
+      const response = await fetch(`${API_URL}/api/rooms/free`);
+      
       if (response.ok) {
         const data = await response.json();
-        // is_free가 true인 방만 필터링
-        const freeRoomsList = data.filter(room => room.is_free === true);
-        setFreeRooms(freeRoomsList);
+        setFreeRooms(data);
       } else {
         console.error('방 목록 가져오기 실패');
         setFreeRooms([]);
