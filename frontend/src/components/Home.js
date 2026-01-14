@@ -16,13 +16,20 @@ function Home() {
 
   const fetchFreeRooms = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/rooms?type=free`);
+      // 모든 방을 가져온 후 클라이언트에서 필터링
+      const response = await fetch(`${API_URL}/api/rooms`);
       if (response.ok) {
         const data = await response.json();
-        setFreeRooms(data.filter(room => room.is_free === true));
+        // is_free가 true인 방만 필터링
+        const freeRoomsList = data.filter(room => room.is_free === true);
+        setFreeRooms(freeRoomsList);
+      } else {
+        console.error('방 목록 가져오기 실패');
+        setFreeRooms([]);
       }
     } catch (error) {
       console.error('무료방 목록 가져오기 실패:', error);
+      setFreeRooms([]);
     } finally {
       setLoading(false);
     }
@@ -72,6 +79,7 @@ function Home() {
           ) : freeRooms.length === 0 ? (
             <div className="no-rooms">
               <p>현재 운영 중인 무료방이 없습니다</p>
+              <p className="info-text">곧 무료 리딩방이 오픈됩니다!</p>
             </div>
           ) : (
             <div className="rooms-grid">

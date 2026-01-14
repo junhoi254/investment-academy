@@ -17,23 +17,29 @@ function Login() {
     setLoading(true);
 
     try {
-      const response = await fetch(`${API_URL}/api/auth/login`, {
+      // Backend API는 /api/token을 사용합니다
+      // FormData 형식으로 전송 (OAuth2 표준)
+      const formData = new URLSearchParams();
+      formData.append('username', phone);
+      formData.append('password', password);
+
+      const response = await fetch(`${API_URL}/api/token`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: JSON.stringify({ phone, password }),
+        body: formData,
       });
 
-      const data = await response.json();
-
       if (response.ok) {
+        const data = await response.json();
         // 토큰 저장
         localStorage.setItem('token', data.access_token);
         
         // 유료방 목록 페이지로 이동
         navigate('/rooms');
       } else {
+        const data = await response.json();
         setError(data.detail || '로그인에 실패했습니다');
       }
     } catch (error) {

@@ -18,7 +18,7 @@ function RoomList() {
   const fetchUserInfo = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${API_URL}/api/users/me`, {
+      const response = await fetch(`${API_URL}/api/me`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
