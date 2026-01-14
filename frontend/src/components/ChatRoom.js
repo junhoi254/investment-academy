@@ -42,12 +42,7 @@ function ChatRoom() {
 
   const fetchRoomInfo = async () => {
     try {
-      const headers = {};
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
-      
-      const response = await fetch(`${API_URL}/api/rooms/${roomId}`, { headers });
+      const response = await fetch(`${API_URL}/api/rooms/${roomId}`);
       if (response.ok) {
         const data = await response.json();
         setRoomInfo(data);
@@ -75,12 +70,7 @@ function ChatRoom() {
 
   const fetchMessages = async () => {
     try {
-      const headers = {};
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
-      
-      const response = await fetch(`${API_URL}/api/messages/${roomId}`, { headers });
+      const response = await fetch(`${API_URL}/api/messages/${roomId}`);
       if (response.ok) {
         const data = await response.json();
         setMessages(data);
@@ -102,7 +92,11 @@ function ChatRoom() {
 
       websocket.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        setMessages(prev => [...prev, data]);
+        
+        // 시스템 메시지가 아닌 경우에만 메시지 목록에 추가
+        if (data.type !== 'system') {
+          setMessages(prev => [...prev, data]);
+        }
       };
 
       websocket.onclose = () => {
